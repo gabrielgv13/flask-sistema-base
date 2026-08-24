@@ -70,6 +70,22 @@ def index():
 
 ## Recebendo dados de formulários
 
+O `request.form.get("email")` procura no formulário enviado um elemento HTML com `name="email"`. O link entre o HTML e o Python é o atributo **`name`**:
+
+```html
+<input type="email" name="email">
+```
+
+```python
+request.form.get("email")  # ← busca name="email"
+```
+
+Quando o formulário é enviado (`method="POST"`), o navegador envia todos os pares `name=valor`. O Flask transforma isso num dicionário em `request.form`. A chave é sempre o `name` — `id`, `class` e `placeholder` não importam para isso.
+
+O `.get()` é acesso a dicionário com valor padrão. `request.form["email"]` também funciona, mas lança erro se a chave não existir. `.get("email", "")` retorna `""` em vez de erro.
+
+Exemplo completo:
+
 ```python
 from flask import request
 
@@ -79,8 +95,6 @@ def login():
     senha = request.form.get("senha", "")
     return f"Recebido: {email}"
 ```
-
-O HTML do formulário:
 
 ```html
 <form method="POST" action="/login">
